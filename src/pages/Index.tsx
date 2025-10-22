@@ -107,7 +107,7 @@ const Index = () => {
         </div>
       </header>
 
-      <section className="relative h-[50vh] flex items-center justify-center bg-black text-white overflow-hidden mt-16">
+      <section className="relative h-[50vh] flex items-center justify-center bg-black text-white overflow-hidden mt-20">
         <img
           src="https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/abea076b-dfde-41c4-ab3b-a7363bff930b.jpg"
           alt="Hero"
