@@ -49,14 +49,24 @@ const Visualization = () => {
     <div className="min-h-screen bg-white">
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm">
         <div className="container mx-auto px-6 lg:px-20">
-          <div className="flex items-center h-20">
-            <Link to="/" className="text-2xl lg:text-3xl font-light tracking-[0.3em] uppercase mr-auto">
+          <div className="flex items-center justify-between h-20">
+            <Link to="/" className="text-2xl lg:text-3xl font-light tracking-[0.3em] uppercase">
               Shendrik.Co
             </Link>
-            <Link to="/" className="text-sm font-light hover:opacity-60 transition-opacity">
-              <Icon name="ArrowLeft" size={20} className="inline mr-2" />
-              Назад
-            </Link>
+            <nav className="hidden lg:flex items-center gap-8">
+              <Link to="/visualization" className="text-sm font-light hover:opacity-60 transition-opacity tracking-wide">
+                Визуализация
+              </Link>
+              <Link to="/residential" className="text-sm font-light hover:opacity-60 transition-opacity tracking-wide">
+                Дизайн жилых интерьеров
+              </Link>
+              <Link to="/cafes" className="text-sm font-light hover:opacity-60 transition-opacity tracking-wide">
+                Кафе и общественные пространства
+              </Link>
+              <Link to="/furniture" className="text-sm font-light hover:opacity-60 transition-opacity tracking-wide">
+                Дизайн мебели
+              </Link>
+            </nav>
           </div>
         </div>
       </header>
