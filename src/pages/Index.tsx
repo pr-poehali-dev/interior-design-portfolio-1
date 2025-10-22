@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 
 const Index = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
+  const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -12,6 +14,30 @@ const Index = () => {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleSections((prev) => new Set(prev).add(entry.target.id));
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -100px 0px' }
+    );
+
+    const sections = document.querySelectorAll('[data-animate]');
+    sections.forEach((section) => {
+      if (observerRef.current) observerRef.current.observe(section);
+    });
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
   }, []);
 
   const projects = [
@@ -98,7 +124,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="projects" className="py-24 lg:py-32">
+      <section id="projects" data-animate className={`py-24 lg:py-32 transition-all duration-1000 ${visibleSections.has('projects') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
         <div className="container mx-auto px-6 lg:px-12">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-light mb-16 lg:mb-24 tracking-wider">
             Проекты
@@ -107,7 +133,8 @@ const Index = () => {
             {projects.map((project) => (
               <div
                 key={project.id}
-                className="group cursor-pointer"
+                className={`group cursor-pointer transition-all duration-700 delay-${(project.id - 1) * 200} ${visibleSections.has('projects') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                style={{ transitionDelay: `${(project.id - 1) * 200}ms` }}
                 onClick={() => setSelectedProject(project.id)}
               >
                 <div className="relative overflow-hidden aspect-[4/3] bg-gray-100 mb-6">
@@ -135,14 +162,14 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="services" className="py-24 lg:py-32 bg-gray-50">
+      <section id="services" data-animate className={`py-24 lg:py-32 bg-gray-50 transition-all duration-1000 ${visibleSections.has('services') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
         <div className="container mx-auto px-6 lg:px-12">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-light mb-16 lg:mb-24 tracking-wider">
             Услуги
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
             {services.map((service, index) => (
-              <div key={index} className="group">
+              <div key={index} className={`group transition-all duration-700 ${visibleSections.has('services') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: `${index * 150}ms` }}>
                 <div className="flex items-start gap-4 mb-4">
                   <span className="text-sm font-light text-gray-400">
                     {String(index + 1).padStart(2, '0')}
@@ -163,7 +190,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="about" className="py-24 lg:py-32">
+      <section id="about" data-animate className={`py-24 lg:py-32 transition-all duration-1000 ${visibleSections.has('about') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
         <div className="container mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
             <div>
@@ -217,7 +244,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="contact" className="py-24 lg:py-32 bg-black text-white">
+      <section id="contact" data-animate className={`py-24 lg:py-32 bg-black text-white transition-all duration-1000 ${visibleSections.has('contact') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
         <div className="container mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
             <div>
