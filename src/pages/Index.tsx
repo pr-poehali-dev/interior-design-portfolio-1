@@ -81,7 +81,6 @@ const Index = () => {
         <div className="container mx-auto px-6 lg:px-12">
           <div className="flex items-center justify-between h-20 lg:h-24">
             <div className="text-2xl lg:text-3xl font-light tracking-wider">
-              KONONENKO
             </div>
             <nav className="hidden md:flex items-center gap-8 lg:gap-12">
               <a href="#projects" className="text-sm lg:text-base font-light hover:opacity-60 transition-opacity">
@@ -104,7 +103,7 @@ const Index = () => {
         </div>
       </header>
 
-      <section className="relative h-screen flex items-center justify-center bg-black text-white overflow-hidden">
+      <section className="relative h-[50vh] flex items-center justify-center bg-black text-white overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/30 z-10"></div>
         <img
           src="https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/abea076b-dfde-41c4-ab3b-a7363bff930b.jpg"
@@ -316,7 +315,6 @@ const Index = () => {
         <div className="container mx-auto px-6 lg:px-12">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="text-xl font-light tracking-wider">
-              KONONENKO
             </div>
             <div className="flex gap-6">
               <a href="#" className="hover:opacity-60 transition-opacity">
