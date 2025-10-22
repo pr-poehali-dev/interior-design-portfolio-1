@@ -216,51 +216,47 @@ const Index = () => {
               </div>
             </Link>
 
-            <Link
-              to="/residential"
-              className="block relative overflow-hidden group w-full"
-              id="residential"
-            >
-              <div className="relative h-[60vh] lg:h-[70vh] overflow-hidden">
-                <img
-                  src="https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/abea076b-dfde-41c4-ab3b-a7363bff930b.jpg"
-                  alt="Жилые интерьеры"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                <div className="absolute bottom-8 left-8 z-10">
-                  <h3 className="text-3xl lg:text-4xl font-light text-white tracking-wide">
-                    Жилые интерьеры
-                  </h3>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-1">
+              <Link
+                to="/residential"
+                className="block relative overflow-hidden group"
+                id="residential"
+              >
+                <div className="relative h-[50vh] lg:h-[60vh] overflow-hidden">
+                  <img
+                    src="https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/abea076b-dfde-41c4-ab3b-a7363bff930b.jpg"
+                    alt="Жилые интерьеры"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                  <div className="absolute bottom-8 left-8 z-10">
+                    <h3 className="text-2xl lg:text-3xl font-light text-white tracking-wide">
+                      Жилые интерьеры
+                    </h3>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          </div>
-        </div>
-      </section>
+              </Link>
 
-      <section className="py-0 lg:py-8">
-        <div className="container mx-auto px-6 lg:px-12">
-          <div className="space-y-1">
-            <Link
-              to="/cafes"
-              className="block relative overflow-hidden group w-full"
-              id="cafes"
-            >
-              <div className="relative h-[60vh] lg:h-[70vh] overflow-hidden">
-                <img
-                  src="https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/86128f5b-4ade-46db-8b2d-1063f18c15c5.jpg"
-                  alt="Кафе и общественные пространства"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                <div className="absolute bottom-8 left-8 z-10">
-                  <h3 className="text-3xl lg:text-4xl font-light text-white tracking-wide">
-                    Кафе и общественные пространства
-                  </h3>
+              <Link
+                to="/cafes"
+                className="block relative overflow-hidden group"
+                id="cafes"
+              >
+                <div className="relative h-[50vh] lg:h-[60vh] overflow-hidden">
+                  <img
+                    src="https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/86128f5b-4ade-46db-8b2d-1063f18c15c5.jpg"
+                    alt="Кафе и общественные пространства"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                  <div className="absolute bottom-8 left-8 z-10">
+                    <h3 className="text-2xl lg:text-3xl font-light text-white tracking-wide">
+                      Кафе и общественные пространства
+                    </h3>
+                  </div>
                 </div>
-              </div>
-            </Link>
+              </Link>
+            </div>
 
             <Link
               to="/furniture"
