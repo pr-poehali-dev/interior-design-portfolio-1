@@ -77,7 +77,11 @@ const Index = () => {
         <div className="container mx-auto px-6 lg:px-12">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-black rounded-sm"></div>
+              <img 
+                src="https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/5b5cf984-b500-4662-8703-e1579686c444.jpg" 
+                alt="Shendrik.Co Logo" 
+                className="w-10 h-10 object-cover rounded-sm"
+              />
               <div className="text-xl font-light tracking-wider">
                 Shendrik.Co
               </div>
@@ -104,23 +108,11 @@ const Index = () => {
       </header>
 
       <section className="relative h-[50vh] flex items-center justify-center bg-black text-white overflow-hidden mt-16">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/30 z-10"></div>
         <img
           src="https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/abea076b-dfde-41c4-ab3b-a7363bff930b.jpg"
           alt="Hero"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="relative z-20 text-center px-6">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-light mb-6 tracking-wider">
-            АРХИТЕКТУРА<br />И ДИЗАЙН
-          </h1>
-          <p className="text-lg md:text-xl lg:text-2xl font-light opacity-90 max-w-2xl mx-auto">
-            Создаем современные пространства для жизни и бизнеса
-          </p>
-        </div>
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 animate-bounce">
-          <Icon name="ChevronDown" size={32} className="opacity-60" />
-        </div>
       </section>
 
       <section id="projects" data-animate className={`py-24 lg:py-32 transition-all duration-1000 ${visibleSections.has('projects') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
