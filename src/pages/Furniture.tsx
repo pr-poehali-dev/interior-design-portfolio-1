@@ -41,7 +41,7 @@ const Furniture = () => {
     },
     {
       id: 7,
-      title: 'Проект 7',
+      title: 'Тв тумба',
       coverImage: 'https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/9d6a5532-6446-4a82-b97b-e3c6358b9e4c.jpg',
       imageCount: 4
     }
