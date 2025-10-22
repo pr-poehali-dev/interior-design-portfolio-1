@@ -82,7 +82,7 @@ const Index = () => {
                 alt="Shendrik.Co Logo" 
                 className="w-30 h-30 object-cover rounded-sm"
               />
-              <div className="text-xl font-light tracking-wider">
+              <div className="text-3xl font-light tracking-wider">
                 Shendrik.Co
               </div>
             </div>
