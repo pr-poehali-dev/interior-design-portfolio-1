@@ -1,310 +1,309 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import Icon from "@/components/ui/icon";
+import { useState, useEffect } from 'react';
+import Icon from '@/components/ui/icon';
+import { Button } from '@/components/ui/button';
 
 const Index = () => {
-  const portfolioItems = [
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<number | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const projects = [
     {
-      image: "/img/a7cce8c1-5c92-40cc-b648-b28fc8f0c509.jpg",
-      title: "Современная гостиная",
-      category: "Жилой интерьер",
-      area: "120 м²"
+      id: 1,
+      title: 'Апартаменты премиум-класса',
+      category: 'Жилые помещения',
+      image: 'https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/abea076b-dfde-41c4-ab3b-a7363bff930b.jpg',
+      description: 'Современный дизайн интерьера с панорамными окнами'
     },
     {
-      image: "/img/974d681f-f7dd-46c6-9c34-6ac5ec1ce74f.jpg",
-      title: "Скандинавская спальня",
-      category: "Жилой интерьер",
-      area: "40 м²"
+      id: 2,
+      title: 'Бизнес-центр',
+      category: 'Коммерческие помещения',
+      image: 'https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/a08ab1f5-8a51-4081-a631-f293a26b55f6.jpg',
+      description: 'Офисные пространства с эргономичным дизайном'
     },
     {
-      image: "/img/cfc3addc-3d43-47b4-9661-d85be257a0bb.jpg",
-      title: "Минималистичная кухня",
-      category: "Кухня",
-      area: "25 м²"
+      id: 3,
+      title: 'Отель класса люкс',
+      category: 'Гостиницы и рестораны',
+      image: 'https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/33581fb3-b40c-4816-8db9-e2a8c5811d3d.jpg',
+      description: 'Премиальный лобби с минималистичной элегантностью'
     }
   ];
 
   const services = [
-    {
-      icon: "Home",
-      title: "Дизайн интерьера",
-      description: "Полное планирование и дизайн жилых и коммерческих пространств"
-    },
-    {
-      icon: "Palette",
-      title: "3D-визуализация",
-      description: "Фотореалистичные визуализации для демонстрации проекта"
-    },
-    {
-      icon: "Layout",
-      title: "Планировка",
-      description: "Оптимизация планировки для максимального комфорта"
-    },
-    {
-      icon: "ShoppingBag",
-      title: "Подбор мебели",
-      description: "Комплектация интерьера мебелью и декором"
-    }
-  ];
-
-  const pricing = [
-    {
-      name: "Базовый",
-      price: "30 000",
-      features: [
-        "Планировочное решение",
-        "Основные 3D-виды",
-        "Подбор материалов",
-        "Консультация дизайнера"
-      ]
-    },
-    {
-      name: "Стандарт",
-      price: "50 000",
-      features: [
-        "Все из базового пакета",
-        "Детальная визуализация",
-        "Чертежи для ремонта",
-        "Авторский надзор",
-        "Подбор освещения"
-      ],
-      popular: true
-    },
-    {
-      name: "Премиум",
-      price: "80 000",
-      features: [
-        "Все из стандартного пакета",
-        "Комплектация мебелью",
-        "Индивидуальный декор",
-        "Полное сопровождение проекта",
-        "3D-тур по интерьеру"
-      ]
-    }
+    'Архитектурное проектирование',
+    'Дизайн интерьера',
+    'Консалтинг',
+    'Авторский надзор'
   ];
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="container mx-auto px-4 text-center">
-          <div className="max-w-4xl mx-auto animate-fade-in">
-            <h1 className="text-5xl md:text-7xl font-light mb-6 text-gray-900 tracking-tight">
-              Дизайн
-              <br />
-              <span className="text-primary font-semibold">Интерьера</span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-2xl mx-auto font-light">
-              Создаем пространства, которые отражают вашу индивидуальность
-              и приносят вдохновение каждый день
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button size="lg" className="px-8 py-6 text-lg">
-                Начать проект
-                <Icon name="ArrowRight" size={20} className="ml-2" />
-              </Button>
-              <Button variant="outline" size="lg" className="px-8 py-6 text-lg">
-                Смотреть портфолио
-              </Button>
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isScrolled ? 'bg-white border-b border-gray-200' : 'bg-transparent'
+        }`}
+      >
+        <div className="container mx-auto px-6 lg:px-12">
+          <div className="flex items-center justify-between h-20 lg:h-24">
+            <div className="text-2xl lg:text-3xl font-light tracking-wider">
+              KONONENKO
             </div>
+            <nav className="hidden md:flex items-center gap-8 lg:gap-12">
+              <a href="#projects" className="text-sm lg:text-base font-light hover:opacity-60 transition-opacity">
+                Проекты
+              </a>
+              <a href="#services" className="text-sm lg:text-base font-light hover:opacity-60 transition-opacity">
+                Услуги
+              </a>
+              <a href="#about" className="text-sm lg:text-base font-light hover:opacity-60 transition-opacity">
+                О бюро
+              </a>
+              <a href="#contact" className="text-sm lg:text-base font-light hover:opacity-60 transition-opacity">
+                Контакты
+              </a>
+            </nav>
+            <button className="md:hidden">
+              <Icon name="Menu" size={24} />
+            </button>
           </div>
+        </div>
+      </header>
+
+      <section className="relative h-screen flex items-center justify-center bg-black text-white overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/30 z-10"></div>
+        <img
+          src="https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/abea076b-dfde-41c4-ab3b-a7363bff930b.jpg"
+          alt="Hero"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="relative z-20 text-center px-6">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-light mb-6 tracking-wider">
+            АРХИТЕКТУРА<br />И ДИЗАЙН
+          </h1>
+          <p className="text-lg md:text-xl lg:text-2xl font-light opacity-90 max-w-2xl mx-auto">
+            Создаем современные пространства для жизни и бизнеса
+          </p>
+        </div>
+        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 animate-bounce">
+          <Icon name="ChevronDown" size={32} className="opacity-60" />
         </div>
       </section>
 
-      {/* Portfolio Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">
-              Портфолио
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Наши последние проекты в области дизайна интерьера
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {portfolioItems.map((item, index) => (
-              <Card key={index} className="group cursor-pointer overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
-                <div className="relative overflow-hidden">
+      <section id="projects" className="py-24 lg:py-32">
+        <div className="container mx-auto px-6 lg:px-12">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-light mb-16 lg:mb-24 tracking-wider">
+            Проекты
+          </h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+            {projects.map((project) => (
+              <div
+                key={project.id}
+                className="group cursor-pointer"
+                onClick={() => setSelectedProject(project.id)}
+              >
+                <div className="relative overflow-hidden aspect-[4/3] bg-gray-100 mb-6">
                   <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300" />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
                 </div>
-                <CardContent className="p-6">
-                  <Badge variant="secondary" className="mb-3">
-                    {item.category}
-                  </Badge>
-                  <h3 className="text-xl font-semibold mb-2 text-gray-900">
-                    {item.title}
+                <div className="space-y-2">
+                  <p className="text-sm font-light text-gray-500 tracking-wider uppercase">
+                    {project.category}
+                  </p>
+                  <h3 className="text-2xl lg:text-3xl font-light tracking-wide">
+                    {project.title}
                   </h3>
-                  <div className="flex items-center text-gray-600">
-                    <Icon name="Square" size={16} className="mr-2" />
-                    <span>{item.area}</span>
-                  </div>
-                </CardContent>
-              </Card>
+                  <p className="text-base font-light text-gray-600">
+                    {project.description}
+                  </p>
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">
-              Услуги
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Полный цикл работ от идеи до реализации
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <section id="services" className="py-24 lg:py-32 bg-gray-50">
+        <div className="container mx-auto px-6 lg:px-12">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-light mb-16 lg:mb-24 tracking-wider">
+            Услуги
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
             {services.map((service, index) => (
-              <Card key={index} className="text-center p-8 border-0 shadow-lg hover:shadow-xl transition-all duration-300 group">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-primary/20 transition-colors">
-                  <Icon name={service.icon} size={32} className="text-primary" />
+              <div key={index} className="group">
+                <div className="flex items-start gap-4 mb-4">
+                  <span className="text-sm font-light text-gray-400">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
                 </div>
-                <h3 className="text-xl font-semibold mb-4 text-gray-900">
-                  {service.title}
+                <h3 className="text-xl lg:text-2xl font-light tracking-wide group-hover:opacity-60 transition-opacity">
+                  {service}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {service.description}
+              </div>
+            ))}
+          </div>
+          <div className="mt-16 lg:mt-24">
+            <p className="text-lg lg:text-xl font-light text-gray-700 max-w-3xl leading-relaxed">
+              Мы создаем современный дизайн и трендовую архитектуру для жилых и коммерческих помещений. 
+              Офисы и бизнес-центры, гостиницы и рестораны, апартаменты бизнес и премиум-класса.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" className="py-24 lg:py-32">
+        <div className="container mx-auto px-6 lg:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+            <div>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-light mb-8 tracking-wider">
+                О бюро
+              </h2>
+              <div className="space-y-6 text-lg font-light text-gray-700 leading-relaxed">
+                <p>
+                  Архитектурное бюро KONONENKO — это команда профессионалов, 
+                  создающих пространства, в которых хочется жить и работать.
                 </p>
-              </Card>
-            ))}
+                <p>
+                  Наш подход основан на балансе функциональности и эстетики, 
+                  внимании к деталям и индивидуальном подходе к каждому проекту.
+                </p>
+                <p>
+                  Мы работаем с современными технологиями и материалами, 
+                  создавая интерьеры и архитектурные решения мирового уровня.
+                </p>
+              </div>
+            </div>
+            <div className="space-y-8">
+              <div className="grid grid-cols-2 gap-8">
+                <div>
+                  <div className="text-5xl lg:text-6xl font-light mb-2">150+</div>
+                  <p className="text-sm font-light text-gray-600 tracking-wider uppercase">
+                    Реализованных проектов
+                  </p>
+                </div>
+                <div>
+                  <div className="text-5xl lg:text-6xl font-light mb-2">12</div>
+                  <p className="text-sm font-light text-gray-600 tracking-wider uppercase">
+                    Лет опыта
+                  </p>
+                </div>
+                <div>
+                  <div className="text-5xl lg:text-6xl font-light mb-2">45</div>
+                  <p className="text-sm font-light text-gray-600 tracking-wider uppercase">
+                    Специалистов
+                  </p>
+                </div>
+                <div>
+                  <div className="text-5xl lg:text-6xl font-light mb-2">8</div>
+                  <p className="text-sm font-light text-gray-600 tracking-wider uppercase">
+                    Наград
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">
-              Тарифы
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Выберите подходящий пакет услуг для вашего проекта
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {pricing.map((plan, index) => (
-              <Card key={index} className={`relative p-8 border-2 transition-all duration-300 hover:shadow-xl ${plan.popular ? 'border-primary shadow-lg scale-105' : 'border-gray-200 hover:border-primary/50'}`}>
-                {plan.popular && (
-                  <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    Популярный
-                  </Badge>
-                )}
-                <div className="text-center mb-8">
-                  <h3 className="text-2xl font-semibold mb-4 text-gray-900">
-                    {plan.name}
-                  </h3>
-                  <div className="mb-4">
-                    <span className="text-4xl font-light text-gray-900">
-                      {plan.price}
-                    </span>
-                    <span className="text-gray-600 ml-2">₽/м²</span>
-                  </div>
+      <section id="contact" className="py-24 lg:py-32 bg-black text-white">
+        <div className="container mx-auto px-6 lg:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+            <div>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-light mb-8 tracking-wider">
+                Контакты
+              </h2>
+              <div className="space-y-6 text-lg font-light">
+                <div>
+                  <p className="text-sm opacity-60 mb-2 tracking-wider uppercase">Адрес</p>
+                  <p>Москва, ул. Пример, д. 1</p>
                 </div>
-                
-                <ul className="space-y-4 mb-8">
-                  {plan.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center text-gray-700">
-                      <Icon name="Check" size={16} className="text-primary mr-3 flex-shrink-0" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                
-                <Button 
-                  className="w-full" 
-                  variant={plan.popular ? "default" : "outline"}
-                  size="lg"
+                <div>
+                  <p className="text-sm opacity-60 mb-2 tracking-wider uppercase">Телефон</p>
+                  <a href="tel:+74951234567" className="hover:opacity-60 transition-opacity">
+                    +7 (495) 123-45-67
+                  </a>
+                </div>
+                <div>
+                  <p className="text-sm opacity-60 mb-2 tracking-wider uppercase">Email</p>
+                  <a href="mailto:info@kononenko.pro" className="hover:opacity-60 transition-opacity">
+                    info@kononenko.pro
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div>
+              <form className="space-y-6">
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Ваше имя"
+                    className="w-full bg-transparent border-b border-white/30 pb-3 text-lg font-light focus:outline-none focus:border-white transition-colors"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    className="w-full bg-transparent border-b border-white/30 pb-3 text-lg font-light focus:outline-none focus:border-white transition-colors"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="tel"
+                    placeholder="Телефон"
+                    className="w-full bg-transparent border-b border-white/30 pb-3 text-lg font-light focus:outline-none focus:border-white transition-colors"
+                  />
+                </div>
+                <div>
+                  <textarea
+                    placeholder="Сообщение"
+                    rows={4}
+                    className="w-full bg-transparent border-b border-white/30 pb-3 text-lg font-light focus:outline-none focus:border-white transition-colors resize-none"
+                  ></textarea>
+                </div>
+                <Button
+                  type="submit"
+                  className="bg-white text-black hover:bg-gray-200 px-12 py-6 text-base font-light tracking-wider"
                 >
-                  Выбрать пакет
+                  Отправить
                 </Button>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section className="py-20 bg-gray-900 text-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-light mb-8">
-              Готовы начать проект?
-            </h2>
-            <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
-              Свяжитесь с нами для консультации и обсуждения деталей вашего будущего интерьера
-            </p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Icon name="Phone" size={24} className="text-primary" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">Телефон</h3>
-                <p className="text-gray-300">+7 (999) 123-45-67</p>
-              </div>
-              
-              <div className="text-center">
-                <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Icon name="Mail" size={24} className="text-primary" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">Email</h3>
-                <p className="text-gray-300">hello@designer.ru</p>
-              </div>
-              
-              <div className="text-center">
-                <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Icon name="MapPin" size={24} className="text-primary" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">Адрес</h3>
-                <p className="text-gray-300">Москва, ул. Дизайнерская, 12</p>
-              </div>
-            </div>
-            
-            <Separator className="bg-gray-700 mb-12" />
-            
-            <div className="space-y-6">
-              <h3 className="text-2xl font-semibold">Договор и чек-лист ТЗ</h3>
-              <p className="text-gray-300 max-w-3xl mx-auto">
-                Для вашего удобства мы подготовили типовой договор и подробный чек-лист 
-                для составления технического задания. Это поможет нам лучше понять ваши 
-                потребности и создать идеальный интерьер.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button variant="outline" className="border-white text-white hover:bg-white hover:text-gray-900">
-                  <Icon name="Download" size={16} className="mr-2" />
-                  Скачать договор
-                </Button>
-                <Button variant="outline" className="border-white text-white hover:bg-white hover:text-gray-900">
-                  <Icon name="FileText" size={16} className="mr-2" />
-                  Чек-лист ТЗ
-                </Button>
-              </div>
+              </form>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-8 bg-black text-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <p className="text-gray-400">
-              © 2024 Студия дизайна интерьера. Все права защищены.
+      <footer className="py-12 bg-black text-white border-t border-white/10">
+        <div className="container mx-auto px-6 lg:px-12">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="text-xl font-light tracking-wider">
+              KONONENKO
+            </div>
+            <div className="flex gap-6">
+              <a href="#" className="hover:opacity-60 transition-opacity">
+                <Icon name="Instagram" size={24} />
+              </a>
+              <a href="#" className="hover:opacity-60 transition-opacity">
+                <Icon name="Facebook" size={24} />
+              </a>
+              <a href="#" className="hover:opacity-60 transition-opacity">
+                <Icon name="Linkedin" size={24} />
+              </a>
+            </div>
+            <p className="text-sm font-light opacity-60">
+              © 2024 KONONENKO. Все права защищены
             </p>
           </div>
         </div>
