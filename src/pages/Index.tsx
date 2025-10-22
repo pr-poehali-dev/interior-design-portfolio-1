@@ -1,12 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import useEmblaCarousel from 'embla-carousel-react';
 import Icon from '@/components/ui/icon';
-import { Button } from '@/components/ui/button';
 
 const Index = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<number | null>(null);
-  const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
-  const observerRef = useRef<IntersectionObserver | null>(null);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,278 +15,330 @@ const Index = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setVisibleSections((prev) => new Set(prev).add(entry.target.id));
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -100px 0px' }
-    );
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev();
+  }, [emblaApi]);
 
-    const sections = document.querySelectorAll('[data-animate]');
-    sections.forEach((section) => {
-      if (observerRef.current) observerRef.current.observe(section);
-    });
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext();
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const onSelect = () => {
+      setCurrentSlide(emblaApi.selectedScrollSnap());
+    };
+
+    emblaApi.on('select', onSelect);
+    onSelect();
 
     return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
+      emblaApi.off('select', onSelect);
     };
-  }, []);
+  }, [emblaApi]);
 
-  const projects = [
-    {
-      id: 1,
-      title: 'Апартаменты премиум-класса',
-      category: 'Жилые помещения',
-      image: 'https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/abea076b-dfde-41c4-ab3b-a7363bff930b.jpg',
-      description: 'Современный дизайн интерьера с панорамными окнами'
-    },
-    {
-      id: 2,
-      title: 'Бизнес-центр',
-      category: 'Коммерческие помещения',
-      image: 'https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/a08ab1f5-8a51-4081-a631-f293a26b55f6.jpg',
-      description: 'Офисные пространства с эргономичным дизайном'
-    },
-    {
-      id: 3,
-      title: 'Отель класса люкс',
-      category: 'Гостиницы и рестораны',
-      image: 'https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/33581fb3-b40c-4816-8db9-e2a8c5811d3d.jpg',
-      description: 'Премиальный лобби с минималистичной элегантностью'
-    }
+  const carouselImages = [
+    'https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/abea076b-dfde-41c4-ab3b-a7363bff930b.jpg',
+    'https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/a08ab1f5-8a51-4081-a631-f293a26b55f6.jpg',
+    'https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/33581fb3-b40c-4816-8db9-e2a8c5811d3d.jpg',
+    'https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/9d6a5532-6446-4a82-b97b-e3c6358b9e4c.jpg',
+    'https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/86128f5b-4ade-46db-8b2d-1063f18c15c5.jpg',
+    'https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/2442bbfd-afb1-4946-8077-eea71e91c311.jpg',
+    'https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/abea076b-dfde-41c4-ab3b-a7363bff930b.jpg',
+    'https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/a08ab1f5-8a51-4081-a631-f293a26b55f6.jpg',
   ];
 
-  const services = [
-    'Архитектурное проектирование',
-    'Дизайн интерьера',
-    'Консалтинг',
-    'Авторский надзор'
+  const sections = [
+    {
+      id: 'visualization',
+      title: 'Визуализация',
+      image: 'https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/9d6a5532-6446-4a82-b97b-e3c6358b9e4c.jpg',
+      span: 'full'
+    },
+    {
+      id: 'residential',
+      title: 'Жилые интерьеры',
+      image: 'https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/abea076b-dfde-41c4-ab3b-a7363bff930b.jpg',
+      span: 'half'
+    },
+    {
+      id: 'cafes',
+      title: 'Кафе и рестораны',
+      image: 'https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/86128f5b-4ade-46db-8b2d-1063f18c15c5.jpg',
+      span: 'half'
+    },
+    {
+      id: 'furniture',
+      title: 'Мебель',
+      image: 'https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/2442bbfd-afb1-4946-8077-eea71e91c311.jpg',
+      span: 'full'
+    }
   ];
 
   return (
     <div className="min-h-screen bg-white">
-      <section className="relative h-[50vh] flex items-center justify-center bg-black text-white overflow-hidden">
-        <img
-          src="https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/abea076b-dfde-41c4-ab3b-a7363bff930b.jpg"
-          alt="Hero"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-      </section>
-
-      <section id="projects" data-animate className={`py-24 lg:py-32 transition-all duration-1000 ${visibleSections.has('projects') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? 'bg-white/95 backdrop-blur-sm shadow-sm' : 'bg-white/50 backdrop-blur-sm'
+      }`}>
         <div className="container mx-auto px-6 lg:px-12">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-light mb-16 lg:mb-24 tracking-wider">
-            Проекты
-          </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-            {projects.map((project) => (
-              <div
-                key={project.id}
-                className={`group cursor-pointer transition-all duration-700 delay-${(project.id - 1) * 200} ${visibleSections.has('projects') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-                style={{ transitionDelay: `${(project.id - 1) * 200}ms` }}
-                onClick={() => setSelectedProject(project.id)}
-              >
-                <div className="relative overflow-hidden aspect-[4/3] bg-gray-100 mb-6">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-sm font-light text-gray-500 tracking-wider uppercase">
-                    {project.category}
-                  </p>
-                  <h3 className="text-2xl lg:text-3xl font-light tracking-wide">
-                    {project.title}
-                  </h3>
-                  <p className="text-base font-light text-gray-600">
-                    {project.description}
-                  </p>
-                </div>
+          <div className="flex items-center justify-between h-20">
+            <div className="text-2xl lg:text-3xl font-light tracking-[0.3em] uppercase">
+              Shendrik.Co
+            </div>
+            <nav className="hidden lg:flex items-center gap-8">
+              <a href="#visualization" className="text-sm font-light hover:opacity-60 transition-opacity tracking-wide">
+                Визуализация
+              </a>
+              <a href="#residential" className="text-sm font-light hover:opacity-60 transition-opacity tracking-wide">
+                Дизайн жилых интерьеров
+              </a>
+              <a href="#cafes" className="text-sm font-light hover:opacity-60 transition-opacity tracking-wide">
+                Дизайн общественных интерьеров
+              </a>
+              <a href="#furniture" className="text-sm font-light hover:opacity-60 transition-opacity tracking-wide">
+                Дизайн мебели
+              </a>
+              <a href="#pricing" className="text-sm font-light hover:opacity-60 transition-opacity tracking-wide">
+                Стоимость услуг
+              </a>
+              <a href="#team" className="text-sm font-light hover:opacity-60 transition-opacity tracking-wide">
+                Наша Команда
+              </a>
+            </nav>
+            <button className="lg:hidden">
+              <Icon name="Menu" size={24} />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <section className="relative h-screen overflow-hidden mt-20">
+        <div className="embla h-full" ref={emblaRef}>
+          <div className="embla__container h-full flex">
+            {carouselImages.map((image, index) => (
+              <div key={index} className="embla__slide flex-[0_0_100%] min-w-0 relative">
+                <img
+                  src={image}
+                  alt={`Slide ${index + 1}`}
+                  className="w-full h-full object-cover"
+                />
               </div>
             ))}
           </div>
         </div>
-      </section>
+        
+        <button
+          onClick={scrollPrev}
+          className="absolute left-6 top-1/2 -translate-y-1/2 z-10 bg-white/80 backdrop-blur-sm hover:bg-white transition-all p-3 rounded-full"
+        >
+          <Icon name="ChevronLeft" size={24} />
+        </button>
+        <button
+          onClick={scrollNext}
+          className="absolute right-6 top-1/2 -translate-y-1/2 z-10 bg-white/80 backdrop-blur-sm hover:bg-white transition-all p-3 rounded-full"
+        >
+          <Icon name="ChevronRight" size={24} />
+        </button>
 
-      <section id="services" data-animate className={`py-24 lg:py-32 bg-gray-50 transition-all duration-1000 ${visibleSections.has('services') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
-        <div className="container mx-auto px-6 lg:px-12">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-light mb-16 lg:mb-24 tracking-wider">
-            Услуги
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-            {services.map((service, index) => (
-              <div key={index} className={`group transition-all duration-700 ${visibleSections.has('services') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: `${index * 150}ms` }}>
-                <div className="flex items-start gap-4 mb-4">
-                  <span className="text-sm font-light text-gray-400">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                </div>
-                <h3 className="text-xl lg:text-2xl font-light tracking-wide group-hover:opacity-60 transition-opacity">
-                  {service}
-                </h3>
-              </div>
-            ))}
-          </div>
-          <div className="mt-16 lg:mt-24">
-            <p className="text-lg lg:text-xl font-light text-gray-700 max-w-3xl leading-relaxed">
-              Мы создаем современный дизайн и трендовую архитектуру для жилых и коммерческих помещений. 
-              Офисы и бизнес-центры, гостиницы и рестораны, апартаменты бизнес и премиум-класса.
-            </p>
-          </div>
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex gap-2">
+          {carouselImages.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => emblaApi?.scrollTo(index)}
+              className={`w-2 h-2 rounded-full transition-all ${
+                currentSlide === index ? 'bg-white w-8' : 'bg-white/50'
+              }`}
+            />
+          ))}
         </div>
       </section>
 
-      <section id="about" data-animate className={`py-24 lg:py-32 transition-all duration-1000 ${visibleSections.has('about') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+      <section className="py-16 lg:py-24">
         <div className="container mx-auto px-6 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
-            <div>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-light mb-8 tracking-wider">
+          <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-16">
+            <div className="flex-shrink-0">
+              <img 
+                src="https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/5b5cf984-b500-4662-8703-e1579686c444.jpg" 
+                alt="Shendrik.Co Logo" 
+                className="w-32 h-32 lg:w-48 lg:h-48 object-cover"
+              />
+            </div>
+            <div className="flex-1">
+              <h2 className="text-3xl lg:text-4xl font-light mb-6 tracking-wide">
                 О бюро
               </h2>
-              <div className="space-y-6 text-lg font-light text-gray-700 leading-relaxed">
+              <div className="space-y-4 text-base lg:text-lg font-light text-gray-700 leading-relaxed max-w-3xl">
                 <p>
-                  Архитектурное бюро KONONENKO — это команда профессионалов, 
-                  создающих пространства, в которых хочется жить и работать.
+                  Архитектурное бюро Shendrik.Co — это команда профессионалов, создающих пространства, 
+                  в которых хочется жить и работать.
                 </p>
                 <p>
-                  Наш подход основан на балансе функциональности и эстетики, 
-                  внимании к деталям и индивидуальном подходе к каждому проекту.
+                  Мы специализируемся на визуализации архитектурных проектов, дизайне жилых и общественных 
+                  интерьеров, а также разработке авторской мебели. Наш подход основан на балансе функциональности 
+                  и эстетики, внимании к деталям и индивидуальном подходе к каждому проекту.
                 </p>
                 <p>
-                  Мы работаем с современными технологиями и материалами, 
-                  создавая интерьеры и архитектурные решения мирового уровня.
+                  Работаем с современными технологиями и материалами, создавая интерьеры и архитектурные 
+                  решения мирового уровня.
                 </p>
-              </div>
-            </div>
-            <div className="space-y-8">
-              <div className="grid grid-cols-2 gap-8">
-                <div>
-                  <div className="text-5xl lg:text-6xl font-light mb-2">150+</div>
-                  <p className="text-sm font-light text-gray-600 tracking-wider uppercase">
-                    Реализованных проектов
-                  </p>
-                </div>
-                <div>
-                  <div className="text-5xl lg:text-6xl font-light mb-2">12</div>
-                  <p className="text-sm font-light text-gray-600 tracking-wider uppercase">
-                    Лет опыта
-                  </p>
-                </div>
-                <div>
-                  <div className="text-5xl lg:text-6xl font-light mb-2">45</div>
-                  <p className="text-sm font-light text-gray-600 tracking-wider uppercase">
-                    Специалистов
-                  </p>
-                </div>
-                <div>
-                  <div className="text-5xl lg:text-6xl font-light mb-2">8</div>
-                  <p className="text-sm font-light text-gray-600 tracking-wider uppercase">
-                    Наград
-                  </p>
-                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="contact" data-animate className={`py-24 lg:py-32 bg-black text-white transition-all duration-1000 ${visibleSections.has('contact') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+      <section className="py-0 lg:py-8">
         <div className="container mx-auto px-6 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
-            <div>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-light mb-8 tracking-wider">
-                Контакты
-              </h2>
-              <div className="space-y-6 text-lg font-light">
-                <div>
-                  <p className="text-sm opacity-60 mb-2 tracking-wider uppercase">Адрес</p>
-                  <p>Москва, ул. Пример, д. 1</p>
-                </div>
-                <div>
-                  <p className="text-sm opacity-60 mb-2 tracking-wider uppercase">Телефон</p>
-                  <a href="tel:+74951234567" className="hover:opacity-60 transition-opacity">
-                    +7 (495) 123-45-67
-                  </a>
-                </div>
-                <div>
-                  <p className="text-sm opacity-60 mb-2 tracking-wider uppercase">Email</p>
-                  <a href="mailto:info@kononenko.pro" className="hover:opacity-60 transition-opacity">
-                    info@kononenko.pro
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div>
-              <form className="space-y-6">
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Ваше имя"
-                    className="w-full bg-transparent border-b border-white/30 pb-3 text-lg font-light focus:outline-none focus:border-white transition-colors"
-                  />
-                </div>
-                <div>
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    className="w-full bg-transparent border-b border-white/30 pb-3 text-lg font-light focus:outline-none focus:border-white transition-colors"
-                  />
-                </div>
-                <div>
-                  <input
-                    type="tel"
-                    placeholder="Телефон"
-                    className="w-full bg-transparent border-b border-white/30 pb-3 text-lg font-light focus:outline-none focus:border-white transition-colors"
-                  />
-                </div>
-                <div>
-                  <textarea
-                    placeholder="Сообщение"
-                    rows={4}
-                    className="w-full bg-transparent border-b border-white/30 pb-3 text-lg font-light focus:outline-none focus:border-white transition-colors resize-none"
-                  ></textarea>
-                </div>
-                <Button
-                  type="submit"
-                  className="bg-white text-black hover:bg-gray-200 px-12 py-6 text-base font-light tracking-wider"
+          <div className="space-y-[3mm]">
+            {sections.map((section) => (
+              <a
+                key={section.id}
+                href={`#${section.id}`}
+                className={`block relative overflow-hidden group ${
+                  section.span === 'full' ? 'w-full' : ''
+                }`}
+              >
+                {section.span === 'full' ? (
+                  <div className="relative h-[60vh] lg:h-[70vh] overflow-hidden">
+                    <img
+                      src={section.image}
+                      alt={section.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    <div className="absolute bottom-8 left-8 z-10">
+                      <h3 className="text-3xl lg:text-4xl font-light text-white tracking-wide">
+                        {section.title}
+                      </h3>
+                    </div>
+                  </div>
+                ) : null}
+              </a>
+            ))}
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-[3mm]">
+              {sections.filter(s => s.span === 'half').map((section) => (
+                <a
+                  key={section.id}
+                  href={`#${section.id}`}
+                  className="block relative overflow-hidden group"
                 >
-                  Отправить
-                </Button>
-              </form>
+                  <div className="relative h-[50vh] lg:h-[60vh] overflow-hidden">
+                    <img
+                      src={section.image}
+                      alt={section.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    <div className="absolute bottom-8 left-8 z-10">
+                      <h3 className="text-2xl lg:text-3xl font-light text-white tracking-wide">
+                        {section.title}
+                      </h3>
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+
+            <a
+              href="#furniture"
+              className="block relative overflow-hidden group"
+            >
+              <div className="relative h-[60vh] lg:h-[70vh] overflow-hidden">
+                <img
+                  src={sections[3].image}
+                  alt={sections[3].title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                <div className="absolute bottom-8 left-8 z-10">
+                  <h3 className="text-3xl lg:text-4xl font-light text-white tracking-wide">
+                    {sections[3].title}
+                  </h3>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="pricing" className="py-24 lg:py-32 bg-gray-50">
+        <div className="container mx-auto px-6 lg:px-12">
+          <h2 className="text-3xl lg:text-4xl font-light mb-12 tracking-wide">
+            Стоимость услуг
+          </h2>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="bg-white p-8 space-y-4">
+              <h3 className="text-2xl font-light tracking-wide">Визуализация</h3>
+              <p className="text-gray-600 font-light">От 15 000 ₽ за изображение</p>
+            </div>
+            <div className="bg-white p-8 space-y-4">
+              <h3 className="text-2xl font-light tracking-wide">Дизайн интерьера</h3>
+              <p className="text-gray-600 font-light">От 3 000 ₽ за м²</p>
+            </div>
+            <div className="bg-white p-8 space-y-4">
+              <h3 className="text-2xl font-light tracking-wide">Дизайн мебели</h3>
+              <p className="text-gray-600 font-light">Индивидуальный расчет</p>
             </div>
           </div>
         </div>
       </section>
 
-      <footer className="py-12 bg-black text-white border-t border-white/10">
+      <section id="team" className="py-24 lg:py-32">
         <div className="container mx-auto px-6 lg:px-12">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="text-xl font-light tracking-wider">
+          <h2 className="text-3xl lg:text-4xl font-light mb-12 tracking-wide">
+            Наша Команда
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[1, 2, 3].map((member) => (
+              <div key={member} className="space-y-4">
+                <div className="aspect-square bg-gray-200 overflow-hidden">
+                  <img
+                    src={`https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/5b5cf984-b500-4662-8703-e1579686c444.jpg`}
+                    alt={`Team member ${member}`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-xl font-light tracking-wide">Имя Фамилия</h3>
+                  <p className="text-gray-600 font-light text-sm">Должность</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <footer className="py-12 bg-black text-white">
+        <div className="container mx-auto px-6 lg:px-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+              <div className="text-2xl font-light tracking-[0.3em] uppercase mb-4">
+                Shendrik.Co
+              </div>
+              <p className="text-sm font-light text-gray-400">
+                Архитектурное бюро полного цикла
+              </p>
             </div>
-            <div className="flex gap-6">
-              <a href="#" className="hover:opacity-60 transition-opacity">
-                <Icon name="Instagram" size={24} />
-              </a>
-              <a href="#" className="hover:opacity-60 transition-opacity">
-                <Icon name="Facebook" size={24} />
-              </a>
-              <a href="#" className="hover:opacity-60 transition-opacity">
-                <Icon name="Linkedin" size={24} />
-              </a>
+            <div>
+              <h4 className="text-sm font-light mb-4 tracking-wide">Контакты</h4>
+              <div className="space-y-2 text-sm font-light text-gray-400">
+                <p>+7 (XXX) XXX-XX-XX</p>
+                <p>info@shendrik.co</p>
+              </div>
             </div>
-            <p className="text-sm font-light opacity-60">
-              © 2024 KONONENKO. Все права защищены
-            </p>
+            <div>
+              <h4 className="text-sm font-light mb-4 tracking-wide">Социальные сети</h4>
+              <div className="flex gap-4">
+                <a href="#" className="hover:opacity-60 transition-opacity">
+                  <Icon name="Instagram" size={20} />
+                </a>
+                <a href="#" className="hover:opacity-60 transition-opacity">
+                  <Icon name="Facebook" size={20} />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </footer>
