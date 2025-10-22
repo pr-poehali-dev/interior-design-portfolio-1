@@ -73,26 +73,23 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? 'bg-white border-b border-gray-200' : 'bg-transparent'
-        }`}
-      >
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
         <div className="container mx-auto px-6 lg:px-12">
-          <div className="flex items-center justify-between h-20 lg:h-24">
-            <div className="text-2xl lg:text-3xl font-light tracking-wider">
+          <div className="flex items-center justify-between h-16">
+            <div className="text-xl font-light tracking-wider">
+              LOGO
             </div>
-            <nav className="hidden md:flex items-center gap-8 lg:gap-12">
-              <a href="#projects" className="text-sm lg:text-base font-light hover:opacity-60 transition-opacity">
+            <nav className="hidden md:flex items-center gap-8">
+              <a href="#projects" className="text-sm font-light hover:opacity-60 transition-opacity">
                 Проекты
               </a>
-              <a href="#services" className="text-sm lg:text-base font-light hover:opacity-60 transition-opacity">
+              <a href="#services" className="text-sm font-light hover:opacity-60 transition-opacity">
                 Услуги
               </a>
-              <a href="#about" className="text-sm lg:text-base font-light hover:opacity-60 transition-opacity">
+              <a href="#about" className="text-sm font-light hover:opacity-60 transition-opacity">
                 О бюро
               </a>
-              <a href="#contact" className="text-sm lg:text-base font-light hover:opacity-60 transition-opacity">
+              <a href="#contact" className="text-sm font-light hover:opacity-60 transition-opacity">
                 Контакты
               </a>
             </nav>
@@ -103,7 +100,7 @@ const Index = () => {
         </div>
       </header>
 
-      <section className="relative h-[50vh] flex items-center justify-center bg-black text-white overflow-hidden">
+      <section className="relative h-[50vh] flex items-center justify-center bg-black text-white overflow-hidden mt-16">
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/30 z-10"></div>
         <img
           src="https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/abea076b-dfde-41c4-ab3b-a7363bff930b.jpg"
