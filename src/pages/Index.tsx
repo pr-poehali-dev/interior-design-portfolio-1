@@ -76,7 +76,7 @@ const Index = () => {
       <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="flex items-center justify-between h-20">
-            <div className="flex items-start gap-3">
+            <div className="flex items-center gap-3">
               <img 
                 src="https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/5b5cf984-b500-4662-8703-e1579686c444.jpg" 
                 alt="Shendrik.Co Logo" 
