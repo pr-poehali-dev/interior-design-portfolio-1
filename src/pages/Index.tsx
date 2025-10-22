@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import useEmblaCarousel from 'embla-carousel-react';
 import Icon from '@/components/ui/icon';
 
@@ -54,25 +55,29 @@ const Index = () => {
       id: 'visualization',
       title: 'Визуализация',
       image: 'https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/9d6a5532-6446-4a82-b97b-e3c6358b9e4c.jpg',
-      span: 'full'
+      span: 'full',
+      link: '/visualization'
     },
     {
       id: 'residential',
       title: 'Жилые интерьеры',
       image: 'https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/abea076b-dfde-41c4-ab3b-a7363bff930b.jpg',
-      span: 'half'
+      span: 'half',
+      link: '/residential'
     },
     {
       id: 'cafes',
-      title: 'Кафе и рестораны',
+      title: 'Кафе и общественные пространства',
       image: 'https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/86128f5b-4ade-46db-8b2d-1063f18c15c5.jpg',
-      span: 'half'
+      span: 'half',
+      link: '/cafes'
     },
     {
       id: 'furniture',
       title: 'Мебель',
       image: 'https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/2442bbfd-afb1-4946-8077-eea71e91c311.jpg',
-      span: 'full'
+      span: 'full',
+      link: '/furniture'
     }
   ];
 
@@ -81,12 +86,12 @@ const Index = () => {
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled ? 'bg-white/95 backdrop-blur-sm shadow-sm' : 'bg-white/50 backdrop-blur-sm'
       }`}>
-        <div className="container mx-auto px-6 lg:px-12">
-          <div className="flex items-center justify-between h-20">
-            <div className="text-2xl lg:text-3xl font-light tracking-[0.3em] uppercase">
+        <div className="container mx-auto px-6 lg:px-20">
+          <div className="flex items-center h-20">
+            <div className="text-2xl lg:text-3xl font-light tracking-[0.3em] uppercase mr-auto">
               Shendrik.Co
             </div>
-            <nav className="hidden lg:flex items-center gap-8">
+            <nav className="hidden lg:flex items-center gap-8 ml-20">
               <a href="#visualization" className="text-sm font-light hover:opacity-60 transition-opacity tracking-wide">
                 Визуализация
               </a>
@@ -94,7 +99,7 @@ const Index = () => {
                 Дизайн жилых интерьеров
               </a>
               <a href="#cafes" className="text-sm font-light hover:opacity-60 transition-opacity tracking-wide">
-                Дизайн общественных интерьеров
+                Кафе и общественные пространства
               </a>
               <a href="#furniture" className="text-sm font-light hover:opacity-60 transition-opacity tracking-wide">
                 Дизайн мебели
@@ -113,7 +118,7 @@ const Index = () => {
         </div>
       </header>
 
-      <section className="relative h-screen overflow-hidden mt-20">
+      <section className="relative overflow-hidden mt-20" style={{ height: 'calc(100vh / 1.5)' }}>
         <div className="embla h-full" ref={emblaRef}>
           <div className="embla__container h-full flex">
             {carouselImages.map((image, index) => (
@@ -192,9 +197,9 @@ const Index = () => {
         <div className="container mx-auto px-6 lg:px-12">
           <div className="space-y-[3mm]">
             {sections.map((section) => (
-              <a
+              <Link
                 key={section.id}
-                href={`#${section.id}`}
+                to={section.link}
                 className={`block relative overflow-hidden group ${
                   section.span === 'full' ? 'w-full' : ''
                 }`}
@@ -214,14 +219,14 @@ const Index = () => {
                     </div>
                   </div>
                 ) : null}
-              </a>
+              </Link>
             ))}
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-[3mm]">
               {sections.filter(s => s.span === 'half').map((section) => (
-                <a
+                <Link
                   key={section.id}
-                  href={`#${section.id}`}
+                  to={section.link}
                   className="block relative overflow-hidden group"
                 >
                   <div className="relative h-[50vh] lg:h-[60vh] overflow-hidden">
@@ -237,12 +242,12 @@ const Index = () => {
                       </h3>
                     </div>
                   </div>
-                </a>
+                </Link>
               ))}
             </div>
 
-            <a
-              href="#furniture"
+            <Link
+              to="/furniture"
               className="block relative overflow-hidden group"
             >
               <div className="relative h-[60vh] lg:h-[70vh] overflow-hidden">
@@ -258,7 +263,7 @@ const Index = () => {
                   </h3>
                 </div>
               </div>
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -310,20 +315,17 @@ const Index = () => {
         </div>
       </section>
 
-      <footer className="py-12 bg-black text-white">
+      <footer className="py-12 bg-white text-black border-t border-gray-200">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <div className="text-2xl font-light tracking-[0.3em] uppercase mb-4">
                 Shendrik.Co
               </div>
-              <p className="text-sm font-light text-gray-400">
-                Архитектурное бюро полного цикла
-              </p>
             </div>
             <div>
               <h4 className="text-sm font-light mb-4 tracking-wide">Контакты</h4>
-              <div className="space-y-2 text-sm font-light text-gray-400">
+              <div className="space-y-2 text-sm font-light text-gray-600">
                 <p>+7 (XXX) XXX-XX-XX</p>
                 <p>info@shendrik.co</p>
               </div>
@@ -331,10 +333,10 @@ const Index = () => {
             <div>
               <h4 className="text-sm font-light mb-4 tracking-wide">Социальные сети</h4>
               <div className="flex gap-4">
-                <a href="#" className="hover:opacity-60 transition-opacity">
+                <a href="#" className="hover:opacity-60 transition-opacity text-black">
                   <Icon name="Instagram" size={20} />
                 </a>
-                <a href="#" className="hover:opacity-60 transition-opacity">
+                <a href="#" className="hover:opacity-60 transition-opacity text-black">
                   <Icon name="Facebook" size={20} />
                 </a>
               </div>
