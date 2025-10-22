@@ -80,7 +80,7 @@ const Index = () => {
               <img 
                 src="https://cdn.poehali.dev/projects/225e8d36-abe0-4bfc-92a7-a7816ca7b2fc/files/5b5cf984-b500-4662-8703-e1579686c444.jpg" 
                 alt="Shendrik.Co Logo" 
-                className="w-10 h-10 object-cover rounded-sm"
+                className="w-30 h-30 object-cover rounded-sm"
               />
               <div className="text-xl font-light tracking-wider">
                 Shendrik.Co
